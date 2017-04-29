@@ -11,7 +11,7 @@
 
 behat() {
     local bin='./vendor/bin/behat'
-    local features='./features/*.feature'
+    local features='./features'
     local processes='4'
     local defaults=($bin $features $processes)
     local childargs=$(echo $@ | awk 'BEGIN {FS=" -- "}{print $2}')
@@ -44,7 +44,7 @@ behat() {
         esac
     done
 
-    find -wholename $features -print0 | xargs -0 -n 1 -P $processes sh -c "\
+    find -wholename $features -iname "*.feature" -print0 | xargs -0 -n 1 -P $processes sh -c "\
         $bin -f progress --stop-on-failure $childargs \$1" sh
 }
 
